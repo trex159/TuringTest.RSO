@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KI oder Mensch?</title>
+    <link rel="icon" href="Res/Icon.png">
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #fff6ef;
+            background-color: #f6ebff;
         }
         #game-container {
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #e5e5e5;
+            background-color: #8400ff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #7bff00;
         }
         #media-container {
             margin: 20px 0;
@@ -31,21 +33,23 @@
             margin: 5px;
             cursor: pointer;
             border: none;
-            background-color: #007BFF;
-            color: white;
+            background-color: #55B100;
+            color: #091400;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #091400;
+            color: #55B100;
         }
         #explanation {
             display: none;
             margin-top: 20px;
             text-align: left;
-            background-color: #e9e9e9;
+            background-color: #d09dff;
             padding: 15px;
             border-radius: 5px;
+            color: #0a0014;
         }
         #explanation-text {
             font-size: 18px;
@@ -146,11 +150,11 @@
         // Überprüfen ob die Antwort richtig ist
         if (userAnswer === file.label) {
             result.textContent = 'Richtig!';
-            result.style.color = 'green';
+            result.style.color = '#68d800';
             correctAnswers++;
         } else {
             result.textContent = 'Falsch!';
-            result.style.color = 'red';
+            result.style.color = '#ff007b';
             // Wenn das aktuelle Element KI ist und die Antwort falsch ist
             if (file.label === 'KI') {
                 wrongKIAnswers++;
