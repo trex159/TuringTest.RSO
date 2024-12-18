@@ -9,16 +9,16 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f6ebff;
+            background-color: #000113;
         }
         #game-container {
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #8400ff;
+            background-color: #151517;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            color: #7bff00;
+            box-shadow: 0 0 18px #37fffc;
+            color: #29adda;
         }
         #media-container {
             margin: 20px 0;
@@ -33,23 +33,23 @@
             margin: 5px;
             cursor: pointer;
             border: none;
-            background-color: #55B100;
-            color: #091400;
+            background-color: #6de0f2;
+            color: #29adda;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #091400;
-            color: #55B100;
+            background-color: #29adda;
+            color: #6de0f2;
         }
         #explanation {
             display: none;
             margin-top: 20px;
             text-align: left;
-            background-color: #d09dff;
+            background-color: #bff6ff;
             padding: 15px;
             border-radius: 5px;
-            color: #0a0014;
+            bordercolor: #29adda;
         }
         #explanation-text {
             font-size: 18px;
@@ -58,6 +58,9 @@
             max-width: 100%;
             display: block;
             margin-top: 15px;
+        }
+        #additional-media {
+            background-color: #37fffc;
         }
         #summary {
             display: none;
@@ -150,11 +153,11 @@
         // Überprüfen ob die Antwort richtig ist
         if (userAnswer === file.label) {
             result.textContent = 'Richtig!';
-            result.style.color = '#68d800';
+            result.style.color = '#69ff37';
             correctAnswers++;
         } else {
             result.textContent = 'Falsch!';
-            result.style.color = '#ff007b';
+            result.style.color = '#ff3769';
             // Wenn das aktuelle Element KI ist und die Antwort falsch ist
             if (file.label === 'KI') {
                 wrongKIAnswers++;
