@@ -3,224 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KI oder Mensch?</title>
+    <title>KI oder Mensch? | Sci-fi Edition</title>
     <link rel="icon" href="Res/Icon.png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #000113;
-        }
-        #game-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #151517;
-            border-radius: 8px;
-            box-shadow: 0 0 18px #37fffc;
-            color: #29adda;
-        }
-        #media-container {
-            margin: 20px 0;
-        }
-        #result {
-            margin: 10px 0;
-            font-weight: bold;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 5px;
-            cursor: pointer;
-            border: none;
-            background-color: #6de0f2;
-            color: #29adda;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #29adda;
-            color: #6de0f2;
-        }
-        #explanation {
-            display: none;
-            margin-top: 20px;
-            text-align: left;
-            background-color: #bff6ff;
-            padding: 15px;
-            border-radius: 5px;
-            bordercolor: #29adda;
-        }
-        #explanation-text {
-            font-size: 18px;
-        }
-        #additional-media img {
-            max-width: 100%;
-            display: block;
-            margin-top: 15px;
-        }
-        #additional-media {
-            background-color: #37fffc;
-        }
-        #summary {
-            display: none;
-            margin-top: 20px;
-        }
-        #summary p {
-            font-size: 18px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>KI oder Mensch?</h1>
-        <div id="media-container">
-            <!-- Hier wird das Bild/Video/Audio angezeigt -->
-        </div>
-        <div id="buttons-container">
-            <button onclick="answer('KI')">KI</button>
-            <button onclick="answer('Mensch')">Mensch</button>
-        </div>
-        <div id="result"></div>
-        <div id="explanation">
-            <h3>Erklärung:</h3>
-            <div id="explanation-text">
-                <!-- Hier steht die Erklärung -->
-                <p>Beispielerklärung für das aktuelle Element. Der Mensch hat typische Merkmale wie...</p>
-            </div>
-            <div id="additional-media">
-                <!-- Optional: Hier wird ein alternatives Bild/Audio/Video angezeigt -->
-            </div>
-            <button onclick="nextMedia()">Weiter</button>
-        </div>
-        <div id="summary">
-            <h2>Auswertung</h2>
-            <p id="score"></p>
-            <button onclick="restart()">Nochmal spielen</button>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div id="instructions" class="modal">
+        <div class="modal-content">
+            <h2>Willkommen zum KI-Erkennungstest</h2>
+            <p>In diesem Test werden Sie verschiedene Medien sehen:</p>
+            <ul>
+                <li>🖼️ Bilder</li>
+                <li>🎵 Audiodateien</li>
+                <li>🎬 Videos</li>
+            </ul>
+            <p>Ihre Aufgabe ist es zu entscheiden, ob das gezeigte Medium von einer KI erstellt oder von einem Menschen gemacht wurde.</p>
+            <p>Tipps zur Erkennung:</p>
+            <ul>
+                <li>Achten Sie auf Details wie Gesichtszüge und Hände</li>
+                <li>Prüfen Sie die Logik und Konsistenz im Bild</li>
+                <li>Ein Bild kann auch vom Mensch bearbeitet worden sein.</li>
+                <li>Bei Audio: Hören Sie auf natürliche Übergänge</li>
+                <li>Bei Audio: Beachten Sie auch den Stil der Musik.</li>
+            </ul>
+            <button onclick="closeInstructions()" class="neon-button">Start</button>
         </div>
     </div>
-<script>
-    const mediaFiles = [
-        { type: 'image', src: 'Res/Wood.jpg', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Bild hat ein Mensch fotografiert.' },  
-        { type: 'audio', src: 'Res/OrchestralAI.mp3', label: 'KI', explanation_media: '', explanation_text: 'Hier ist ein einfacher KI-Soundtrack zu hören.' },  
-        { type: 'image', src: 'Res/Trump.Potato.jpg', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Bild hat ein Mensch bearbeitet.' },  
-        { type: 'image', src: 'Res/ChuckNorris.jpg', label: 'KI', explanation_media: '', explanation_text: 'Chuck Norris wurde von einer KI erstellt, das sollte man noch erkennen können.' },
-        { type: 'image', src: 'Res/AIwood.jpg', label: 'KI', explanation_media: '', explanation_text: 'Achtet man auf die Blattstrukturen und Details, sollte auffallen, dass hier eine KI am Werk war.' },  
-        { type: 'image', src: 'Res/keller.jpg', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Bild zeigt reale Lichtverhältnisse und Reflexionen, die durch reale Verhältnisse entstanden sind.' },
-        { type: 'video', src: 'Res/Dungeon.mp4', label: 'KI', explanation_media: '', explanation_text: 'Die Bewegungen und Verformungen in diesem Video sind für KI-Videos charakteristisch.' },
-        { type: 'audio', src: 'Res/MusicM.mp3', label: 'Mensch', explanation_media: '', explanation_text: 'Hier ist ein einfacher Funk-Soundtrack zu hören.' },  
-        { type: 'image', src: 'Res/face-swap.png', label: 'KI', explanation_media: 'Res/Proffesor_Original.jpg', explanation_text: 'Hier sieht man zwar ein reales Gesicht und einen realen Körper, aber es wurde Olaf-Schol\'s Gesicht mit KI hinzugefügt, und damit das Original-Gesicht ersetzt.' },
-        { type: 'image', src: 'Res/Dog.jpg', label: 'KI', explanation_media: '', explanation_text: 'Man kann erkennen, das hier ein KI-Werk gezeigt wird, indem man zum Beispiel auf die "Kopfhörer" achtet.' },  
-        { type: 'image', src: 'Res/Art.png', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Werk hat ein Mensch digital gezeichnet.' },  
-        { type: 'audio', src: 'Res/AIfunk.mp3', label: 'KI', explanation_media: '', explanation_text: 'Hier ist ein einfacher Funk-Soundtrack zu hören, allerdings wurde er mit einer KI generiert.' },  
-        { type: 'image', src: 'Res/Lasersword1000.jpg', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Bild hat ein Mensch bearbeitet.' },  
-        { type: 'audio', src: 'Res/Soundtrack.mp3', label: 'Mensch', explanation_media: '', explanation_text: 'Dieser Soundtrack wurde durch Menschenhand erschaffen.' },  
-        { type: 'image', src: 'Res/Swords.jpg', label: 'Mensch', explanation_media: '', explanation_text: 'Dieses Bild hat ein Mensch in Starvanger (Fjord in Norwegen) aufgenommen.' },  
-        { type: 'audio', src: 'Res/RCiB.mp3', label: 'KI', explanation_media: '', explanation_text: 'Dieses Lied wurde von einer KI generiert.' },  
-        { type: 'image', src: 'Res/Wolf.jpg', label: 'KI', explanation_media: '', explanation_text: 'Dieses Werk wurde von einer KI generiert, dass kann man erkennen, wenn man auf die Spitzen der Krone achtet.' },  
-  ];
-    let currentIndex = 0;
-    let correctAnswers = 0;
-    let totalKIAnswers = 0; // Anzahl der KI-Inhalte
-    let wrongKIAnswers = 0; // Falsche Antworten auf KI-Inhalte
-    function loadMedia() {
-        const mediaContainer = document.getElementById('media-container');
-        mediaContainer.innerHTML = ''; // Inhalt löschen
-        const file = mediaFiles[currentIndex];
-        // Setzt das Ergebnis von der vorherigen Antwort zurück
-        document.getElementById('result').textContent = '';
-        if (file.type === 'image') {
-            const img = document.createElement('img');
-            img.src = file.src;
-            img.style.maxWidth = '100%';
-            mediaContainer.appendChild(img);
-        } else if (file.type === 'audio') {
-            const audio = document.createElement('audio');
-            audio.src = file.src;
-            audio.controls = true;
-            mediaContainer.appendChild(audio);
-        } else if (file.type === 'video') {
-            const video = document.createElement('video');
-            video.src = file.src;
-            video.controls = true;
-            video.style.maxWidth = '100%';
-            mediaContainer.appendChild(video);
-        }
-    }
-    function answer(userAnswer) {
-        const result = document.getElementById('result');
-        const file = mediaFiles[currentIndex];
-        // Überprüfen ob die Antwort richtig ist
-        if (userAnswer === file.label) {
-            result.textContent = 'Richtig!';
-            result.style.color = '#69ff37';
-            correctAnswers++;
-        } else {
-            result.textContent = 'Falsch!';
-            result.style.color = '#ff3769';
-            // Wenn das aktuelle Element KI ist und die Antwort falsch ist
-            if (file.label === 'KI') {
-                wrongKIAnswers++;
-            }
-        }
-        // Die Gesamtzahl der KI-Medien mitzählen
-        if (file.label === 'KI') {
-            totalKIAnswers++;
-        }
-        // Knöpfe nach der Antwort ausblenden
-        document.getElementById('buttons-container').style.display = 'none';
-        // Erklärung anzeigen
-        showExplanation();
-    }
-    function showExplanation() {
-        document.getElementById('explanation').style.display = 'block';
-        const file = mediaFiles[currentIndex]; // Das aktuelle Media
-        // Medien für die Erklärung anzeigen
-        const additionalMedia = document.getElementById('additional-media');
-        additionalMedia.innerHTML = ''; // Vorherige Inhalte löschen
-        if (file.explanation_media) {
-            const img = document.createElement('img');
-            img.src = file.explanation_media;
-            additionalMedia.appendChild(img);
-        }
-        // Text der Erklärung einfügen
-        const explanationText = document.getElementById('explanation-text');
-        explanationText.innerHTML = `<p>${file.explanation_text}</p>`;
-    }
-    function nextMedia() {
-        document.getElementById('explanation').style.display = 'none';
-        document.getElementById('buttons-container').style.display = 'block'; // Knöpfe wieder anzeigen
-        currentIndex++;
-        if (currentIndex < mediaFiles.length) {
-            loadMedia(); // Nächstes Media laden
-        } else {
-            showSummary(); // Spielende und Auswertung anzeigen
-        }
-    }
-function showSummary() {
-    const summary = document.getElementById('summary');
-    const scoreElement = document.getElementById('score');
-    const incorrectAnswers = mediaFiles.length - correctAnswers;
-    const score = Math.round((correctAnswers / mediaFiles.length) * 100);
-    const incorrectPercentage = Math.round((incorrectAnswers / mediaFiles.length) * 100);
-    scoreElement.textContent = `Du hast ${score}% richtig beantwortet!`;
-    // Test besteht nur, wenn 50% oder mehr falsch beantwortet wurden
-    const turingTestPassed = (incorrectPercentage >= 50); 
-    const turingTestMessage = turingTestPassed ?
-        'Die KI hat den Test bestanden! Du hast mehr als 50% falsch erkannt.' :
-        'Die KI hat den Test nicht bestanden! Du hast zu viele richtige Antworten gegeben.';
-    const turingTestElement = document.createElement('p');
-    turingTestElement.textContent = turingTestMessage;
-    summary.appendChild(turingTestElement);
-    // Buttons ausblenden
-    document.getElementById('buttons-container').style.display = 'none';
-    summary.style.display = 'block';
-}
-    function restart() {
-location.reload();
-    }
-    // Spiel starten
-    loadMedia();
-</script>
+
+    <div id="game-container">
+        <div class="cyber-header">
+            <h1>KI oder Mensch?</h1>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <div id="media-container">
+            <!-- Media content will be loaded here -->
+        </div>
+
+        <div id="buttons-container" class="cyber-buttons">
+            <button onclick="answer('KI')" class="neon-button">KI</button>
+            <button onclick="answer('Mensch')" class="neon-button">Mensch</button>
+        </div>
+
+        <div id="result"></div>
+
+        <div id="explanation">
+            <h3>Erklärung:</h3>
+            <div id="explanation-text"></div>
+            <div id="additional-media"></div>
+            <button onclick="nextMedia()" class="neon-button">Weiter</button>
+        </div>
+
+        <div id="summary">
+            <h2>Auswertung</h2>
+            <div id="score"></div>
+            <div id="detailed-stats"></div>
+            <button onclick="restart()" class="neon-button">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
